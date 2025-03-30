@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronômetro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: black;
+            color: white;
+        }
+        #timer {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="timer">00:00:00</div>
+    <button id="startStop">Iniciar</button>
+    <button id="reset">Zerar</button>
+
+    <script>
+        let timerInterval;
+        let seconds = 0;
+        let minutes = 0;
+        let hours = 0;
+        let isRunning = false;
+
+        const timerDisplay = document.getElementById('timer');
+        const startStopButton = document.getElementById('startStop');
+        const resetButton = document.getElementById('reset');
+
+        startStopButton.addEventListener('click', function() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                startStopButton.textContent = 'Iniciar';
+            } else {
+                timerInterval = setInterval(updateTimer, 1000);
+                startStopButton.textContent = 'Parar';
+            }
+            isRunning = !isRunning;
+        });
+
+        resetButton.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            timerDisplay.textContent = '00:00:00';
+            startStopButton.textContent = 'Iniciar';
+            isRunning = false;
+        });
+
+        function updateTimer() {
+            seconds++;
+            if (seconds === 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes === 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+
+            timerDisplay.textContent = formatTime(hours) + ':' + formatTime(minutes) + ':' + formatTime(seconds);
+        }
+
+        function formatTime(time) {
+            return time < 10 ? '0' + time : time;
+        }
+    </script>
+
+</body>
+</html>
